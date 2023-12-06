@@ -55,7 +55,7 @@ public class ListDir {
     public static void main(String[] args) {
         System.out.println("List Directory");
         try {
-            ListDir list = new ListDir("C:\\haidang");
+            ListDir list = new ListDir("C:");
             list.listAll("out.txt");
         } catch (IOException e) {
             System.out.println("err");

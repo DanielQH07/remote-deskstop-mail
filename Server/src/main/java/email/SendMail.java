@@ -36,7 +36,7 @@ public class SendMail {
     public static SendMail getInstance() {
         return instance;
     }
-    public void Send(String Filename) throws IOException {
+    public void Send(String subject,String text, String Filename) throws IOException, MessagingException {
         String to = "haidangdtly2022@gmail.com";
 
         Properties prop = new Properties();
@@ -60,14 +60,13 @@ public class SendMail {
                 );
 
         try {
-
             this.message = new MimeMessage(this.session);
 
             this.message.setFrom(new InternetAddress(email));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("Message from Dang");
+            message.setSubject(subject);
 
-            String msg = "Here is your file";
+            String msg = text;
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(msg, "text/html");

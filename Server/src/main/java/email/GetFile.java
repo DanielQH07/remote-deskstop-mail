@@ -1,5 +1,6 @@
 package email;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 
 public class GetFile {
@@ -9,9 +10,9 @@ public class GetFile {
         return instance;
     }
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MessagingException {
         String Filename = "log.txt";
         SendMail obj = new SendMail();
-        obj.Send(Filename);
+        obj.Send(null,null,Filename);
     }
 }
