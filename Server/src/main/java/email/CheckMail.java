@@ -46,60 +46,6 @@ public class CheckMail {
         System.out.println(Arrays.toString(parts));
         return true;
     }
-    public boolean checkStopLog(){
-        final boolean[] flag = new boolean[1];
-        new Thread() {
-            @Override
-            public void run() {
-                flag[0] = false;
-                while(!flag[0]) {
-                    try {
-                        Thread.sleep(500);
-                        Folder emailFolder = null;
-                        emailFolder = store.getFolder("INBOX");
-                        emailFolder.open(Folder.READ_WRITE);
-                        Message[] ls = emailFolder.getMessages();
-//                        boolean first = true;
-//                        for (int i = ls.length - 1; i >= 0; i--) {
-//                            var m = ls[i];
-//                            String subject = m.getSubject();
-//                            if (subject.startsWith("req") && first) {
-//                                //boolean kq = Main.processRequest(subject);
-//                                boolean kq = processRequest(subject);
-//                                if (kq) {
-//                                    System.out.println("Resolved " + subject);
-//                                } else {
-//                                    System.out.println("Rejected " + subject);
-//                                }
-//                                first = false;
-//                            }
-//                            m.setFlag(Flags.Flag.DELETED, true);
-                        if (ls.length != 0) {
-                            Message newEmail = ls[0];
-                            String subject = newEmail.getSubject();
-                            System.out.println("Nothing");
-                            String[] parts = subject.split("/");
-                            if (parts[2].trim().equalsIgnoreCase("keylog")) {
-                                String res = parts[3];
-                                if (res.equalsIgnoreCase("End")) {
-                                    flag[0] = true;
-                                    System.out.println("Hey");
-                                }
-                                newEmail.setFlag(Flags.Flag.DELETED, true);
-                            }
-                        }
-                        emailFolder.close(true);
-                    } catch (InterruptedException e) {
-                        System.out.println("Can't connect to mail");
-                        e.printStackTrace();
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    }
-                }
-                };
-        }.start();
-        return flag[0];
-    }
 
     public void listen() {
         new Thread() {
