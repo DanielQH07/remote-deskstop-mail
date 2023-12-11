@@ -43,7 +43,7 @@ public class LogoutandShut {
         }
     }
 
-    public void Restart( String Password){
+    public void Restart(String Password){
         try {
             Process process;
             int exitcode = -1;

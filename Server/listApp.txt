@@ -1,0 +1,106 @@
+DisplayName
+-----------
+7-Zip 19.00
+Visual Studio Community 2022
+Adobe Flash Player 32 NPAPI
+Adobe Genuine Service
+Dev-C++
+IntelliJ IDEA 2023.2.5
+Microsoft Edge
+Microsoft Edge Update
+OBS Studio
+PyCharm Community Edition 2022.3.2
+ResearchSoft Direct Export Helper
+SpeedFan (remove only)
+VooV Meeting
+WinRAR 5.90 (32-bit)
+Microsoft Visual C++ 2013 Redistributable (x64) - 12.0.40664
+Microsoft Visual C++ 2013 Redistributable (x64) - 12.0.30501
+Windows SDK Desktop Tools arm64
+Windows IoT Extension SDK
+WinRT Intellisense UAP - en-us
+Windows SDK for Windows Store Apps DirectX x86 Remote
+Microsoft Visual Studio Setup WMI Provider
+WinRT Intellisense PPI - en-us
+Windows SDK Desktop Libs x64
+Windows SDK Desktop Tools x86
+Windows SDK for Windows Store Apps Libs
+WinRT Intellisense IoT - Other Languages
+Windows App Certification Kit SupportedApiList x86
+Windows SDK for Windows Store Apps Contracts
+Windows SDK Desktop Libs arm
+WinAppDeploy
+Windows SDK for Windows Store Apps Metadata
+Windows SDK Facade Windows WinMD Versioned
+Windows SDK DirectX x86 Remote
+WinRT Intellisense IoT - en-us
+Microsoft Visual C++ 2012 Redistributable (x86) - 11.0.61030
+Python Launcher
+WebAdvisor by McAfee
+Windows SDK Desktop Headers x86
+Microsoft .NET Runtime - 5.0.9 (x64)
+Windows SDK Modern Non-Versioned Developer Tools
+Windows SDK Redistributables
+WinRT Intellisense Mobile - en-us
+Windows Software Development Kit - Windows 10.0.19041.685
+Microsoft Visual C++ 2022 X86 Minimum Runtime - 14.32.31326
+Windows IoT Extension SDK Contracts
+Windows SDK for Windows Store Apps Tools
+Windows SDK Desktop Headers arm
+Universal CRT Extension SDK
+Sothink Logo Maker Professional
+AudioWizard
+Windows Team Extension SDK Contracts
+Windows App Certification Kit x64
+Universal CRT Headers Libraries and Sources
+Microsoft Visual C++ 2005 Redistributable
+Windows Mobile Extension SDK
+SDK ARM Redistributables
+Teams Machine-Wide Installer
+Windows Mobile Extension SDK Contracts
+MSI Development Tools
+Windows SDK
+Windows SDK Desktop Libs x86
+Microsoft Visual C++ 2013 x86 Minimum Runtime - 12.0.40664
+Microsoft Visual C++ 2015-2022 Redistributable (x86) - 14.32.31326
+WinRT Intellisense UAP - Other Languages
+Windows SDK for Windows Store Apps Headers
+Windows SDK ARM Desktop Tools
+Microsoft .NET Framework 4.8 SDK
+Windows SDK Desktop Libs arm64
+Microsoft Visual C++ 2013 Redistributable (x86) - 12.0.40664
+Microsoft Visual C++ 2022 X86 Additional Runtime - 14.32.31326
+Windows Desktop Extension SDK Contracts
+Windows SDK EULA
+Universal CRT Redistributable
+Windows SDK for Windows Store Apps
+Universal General MIDI DLS Extension SDK
+Adobe Refresh Manager
+Adobe Acrobat DC
+Microsoft Visual C++ 2012 x86 Additional Runtime - 11.0.61030
+WinRT Intellisense Desktop - Other Languages
+Windows SDK Signing Tools
+WinRT Intellisense Desktop - en-us
+Universal CRT Tools x86
+Microsoft Visual C++ 2012 x86 Minimum Runtime - 11.0.61030
+VS Immersive Activate Helper
+Windows SDK Desktop Headers x64
+Windows SDK Desktop Headers arm64
+Microsoft Visual C++ 2012 Redistributable (x64) - 11.0.61030
+Windows Team Extension SDK
+Windows Desktop Extension SDK
+Microsoft Visual C++ 2013 x86 Additional Runtime - 12.0.40664
+Microsoft Visual C++ 2015-2022 Redistributable (x64) - 14.34.31931
+Microsoft Visual C++ 2022 X86 Debug Runtime - 14.32.31326
+UltraViewer version 6.2.80
+Windows SDK AddOn
+Kits Configuration Installer
+Microsoft Visual C++ 2010  x86 Redistributable - 10.0.40219
+Microsoft Visual C++ 2013 Redistributable (x86) - 12.0.30501
+Weeeb Store 1.02 Beta
+Windows SDK Desktop Tools x64
+Microsoft Visual Studio Setup Configuration
+Windows SDK Modern Versioned Developer Tools
+SDK ARM Additions
+WinRT Intellisense PPI - Other Languages
+Windows SDK for Windows Store Managed Apps Libs

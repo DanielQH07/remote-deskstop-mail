@@ -1,93 +1,98 @@
 package email;
 
-import java.io.*;
-import java.util.Date;
-import java.util.Properties;
-import javax.mail.Authenticator;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Multipart;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
+
 public class SendMail {
+
     private Session session;
     private Message message;
-    private String email, password;
+    private String username, password;
     private static SendMail instance = new SendMail();
 
-    private void getMail() {
+    public static SendMail getInstance()
+    {
+        return instance;
+    }
+    private void accountMail()
+    {
         try (BufferedReader br = new BufferedReader(new FileReader("mail.txt"))) {
-            email = br.readLine().trim();
-            password = br.readLine().trim();
+            this.username = br.readLine().trim();
+            this.password = br.readLine().trim();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static SendMail getInstance() {
-        return instance;
-    }
-    public void Send(String subject,String text, String Filename) throws IOException, MessagingException {
-        String to = "haidangdtly2022@gmail.com";
+    private SendMail()
+    {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
 
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.socketFactory.port", "465");
-        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        accountMail();
 
-        getMail();
         this.session =
-                Session.getDefaultInstance(
-                        prop,
-                        new Authenticator() {
+                Session.getDefaultInstance(properties, new Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                        email, password
+                                        username, password
                                 );
                             }
                         }
                 );
-
         try {
             this.message = new MimeMessage(this.session);
 
-            this.message.setFrom(new InternetAddress(email));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject(subject);
+            this.message.setFrom(new InternetAddress(username));
 
-            String msg = text;
-
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(msg, "text/html");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(mimeBodyPart);
-
-            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-            attachmentBodyPart.attachFile(new File(Filename));
-            multipart.addBodyPart(attachmentBodyPart);
-            message.setContent(multipart);
-
-            Transport.send(message);
-
-            System.out.println("Mail successfully sent..");
-
+            this.message.setRecipient(
+                    Message.RecipientType.TO,
+                    new InternetAddress("haidangdtly2022@gmail.com")
+            );
         } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void Send(String subject, String text, String file)
+            throws IOException, MessagingException
+    {
+        this.message.setSubject(subject);
+        MimeBodyPart filePart = new MimeBodyPart();
+
+        if (text != null)
+            filePart.setText(text);
+        if (file != null)
+            filePart.attachFile(file);
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(filePart);
+        this.message.setContent(multipart);
+        Transport.send(message);
+
+        System.out.println("Sucessful...");
+        return;
+    }
+
+    public static void main(String[] args)
+    {
+        try {
+            SendMail.getInstance().Send("[Test]", "ScreenShot nè", null);
+        }catch(IOException | MessagingException e)
+        {
             e.printStackTrace();
         }
-    }
-    public static void main(String[] args) {
-        SendMail instance = SendMail.getInstance();
     }
 }

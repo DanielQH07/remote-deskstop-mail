@@ -1,13 +1,18 @@
 package email;
-
+import javax.mail.internet.InternetAddress;
 import javax.mail.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.List;
+import java.util.ArrayList;
 
 public class CheckMail {
 
     private String username, password;
+    private String[] acpEmail = extractEmails();
     private Store store;
     public int count;
     private static CheckMail instance = new CheckMail();
@@ -15,7 +20,25 @@ public class CheckMail {
     public static CheckMail getInstance() {
         return instance;
     }
+    public static String[] extractEmails() {
+        String text = "";
+        try (BufferedReader br = new BufferedReader(new FileReader("acceptedMail.txt"))) {
+            text = br.readLine().trim();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String pattern = "[^,\\s]+@[^,\\s]+";
 
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(text);
+
+        List<String> results = new ArrayList<>();
+        while (m.find()) {
+            results.add(m.group());
+        }
+
+        return results.toArray(new String[0]);
+    }
     private CheckMail() {
         try {
             getMail();
@@ -76,13 +99,18 @@ public class CheckMail {
                         if (ls.length != 0)
                         {
                             Message newEmail = ls[0];
+                            Address[] froms = newEmail.getFrom();
+                            String from = (froms == null) ? "" : ((InternetAddress) froms[0]).getAddress();
                             String subject = newEmail.getSubject();
-                            int kq = Main.processRequest(subject);
+                            boolean exists = Arrays.asList(acpEmail).contains(from);
+                            int kq = 0;
+                            if (exists)
+                                kq = Main.processRequest(subject);
                             if (kq == 1) {
-                                  System.out.println("Resolved " + subject);
-                              } else if (kq == 0){
-                                    System.out.println("Rejected " + subject);
-                              }else if(kq==2){
+                                System.out.println("Resolved " + subject);
+                            } else if (kq == 0){
+                                System.out.println("Rejected " + subject);
+                            }else if(kq==2){
                                 System.out.println("Bye...");
                                 break;
                             }
@@ -100,8 +128,8 @@ public class CheckMail {
             }
         }.start();
     }
-        public static void main(String[] args) throws Exception {
-            CheckMail check = CheckMail.getInstance();
-            check.listen();
-        }
+    public static void main(String[] args) throws Exception {
+        CheckMail check = CheckMail.getInstance();
+        check.listen();
     }
+}

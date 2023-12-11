@@ -8,21 +8,21 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class ListDir {
-    private Path root;
-    private BufferedWriter writer;
+    private static BufferedWriter writer;
+    private static ListDir instance = new ListDir();
 
-    public ListDir(String r) throws IOException {
-        root = Path.of(r).toAbsolutePath().toRealPath();
-
+    public static ListDir getInstance() {
+        return instance;
     }
 
-    public void listAll(String out) throws IOException {
+    public static void listAll(String r, String out) throws IOException {
         writer = new BufferedWriter(new FileWriter(out));
-        list(root, "");
+        list(r, "");
         writer.close();
     }
 
-    public void list(Path r, String prefix) throws IOException {
+    public static void list(String root, String prefix) throws IOException {
+        Path r = Path.of(root).toAbsolutePath().toRealPath();
         if (r.equals(root)) {
             writer.write(root.toString());
             writer.newLine();
@@ -39,7 +39,7 @@ public class ListDir {
                 writer.newLine();
                 writer.flush();
                 if (Files.isDirectory(p))
-                    list(p, prefix + "   ");
+                    list(String.valueOf(p), prefix + "   ");
             } else {
                 writer.write(prefix);
                 writer.write("├───");
@@ -47,16 +47,14 @@ public class ListDir {
                 writer.newLine();
                 writer.flush();
                 if (Files.isDirectory(p))
-                    list(p, prefix + "│   ");
+                    list(String.valueOf(p), prefix + "│   ");
             }
         }
     }
-
     public static void main(String[] args) {
         System.out.println("List Directory");
         try {
-            ListDir list = new ListDir("C:");
-            list.listAll("out.txt");
+            listAll("C:","out.txt");
         } catch (IOException e) {
             System.out.println("err");
             e.printStackTrace();
