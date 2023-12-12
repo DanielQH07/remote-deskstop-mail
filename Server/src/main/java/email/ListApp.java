@@ -1,7 +1,9 @@
 package email;
 
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 public class ListApp {
     private static ListApp instance = new ListApp();
@@ -69,6 +71,29 @@ public class ListApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static String runApp(String filePath) {
+        File file = new File(filePath);
+
+        // Check if the file exists
+        if (!file.exists() || !file.isFile()) {
+            return "File does not exist or is not a valid file. Pleas request list app";
+        }
+
+        // Check if Desktop is supported (available in the current environment)
+        if (!Desktop.isDesktopSupported()) {
+
+            return "Desktop is not supported.";
+        }
+
+        // Open the file
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            desktop.open(file);
+        } catch (IOException e) {
+            return "An error occurred while opening the file: " + e.getMessage();
+        }
+        return "Error when running app";
     }
 }
 
