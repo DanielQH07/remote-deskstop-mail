@@ -121,8 +121,8 @@ public class ProcessPC {
         System.out.println("Pls give us what u wanna start");
         String start = scanner.nextLine();
         processPC.StartProcess(start);
-        /*System.out.println("Pls give us what u want to kill");
+        System.out.println("Pls give us what u want to kill");
         int kill = scanner.nextInt();
-        processPC.StopProcess(kill);*/
+        processPC.StopProcess(kill);
     }
 }

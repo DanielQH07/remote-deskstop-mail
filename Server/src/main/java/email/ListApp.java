@@ -1,55 +1,77 @@
 package email;
+
 import java.io.*;
-import java.nio.charset.Charset;
-import java.io.BufferedReader;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class ListApp {
-
     private static ListApp instance = new ListApp();
-
     public static ListApp getInstance() {
         return instance;
     }
-    private static boolean containsSpecialCharacters(String s) {
-        Pattern pattern = Pattern.compile("[^a-zA-Z0-9 +\\-().]");
-        return pattern.matcher(s).find();
+    private static String[] programFilesPaths = { "C:\\Program Files", "C:\\Program Files (x86)" };
+
+    public static void main(String[] args) {
+        ListApp.getInstance().listFoldersAndExes("ListApp.txt");
     }
-    public void list(String filename) {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd", "/c", "powershell", "Get-ItemProperty HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Select-Object DisplayName");
-            processBuilder.redirectErrorStream(true);
-            Process process = processBuilder.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-            while ((line = reader.readLine()) != null) {
+    public static void listFoldersAndExes(String outputPath) {
+        Map<String, List<String>> folderExeMap = new TreeMap<>();
 
-                if (!containsSpecialCharacters(line) || line.equalsIgnoreCase("")) {
-                    line = line.trim(); // Remove leading and trailing whitespaces
-                    if (!line.isEmpty()) {
-                        writer.write(line);
-                        writer.newLine();
+        for (String programFilesPath : programFilesPaths) {
+            File programFilesFolder = new File(programFilesPath);
+            if (programFilesFolder.exists() && programFilesFolder.isDirectory()) {
+                findExesInFolders(programFilesFolder, folderExeMap);
+            }
+        }
+
+        writeFoldersAndExes(outputPath, folderExeMap);
+    }
+
+    public static void findExesInFolders(File directory, Map<String, List<String>> folderExeMap) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    List<String> exePaths = new ArrayList<>();
+                    findExes(file, exePaths);
+                    if (!exePaths.isEmpty()) {
+                        folderExeMap.put(file.getName(), exePaths);
                     }
                 }
             }
-            writer.close();
-            reader.close();
-
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("List of installed applications retrieved successfully.");
-            } else {
-                System.out.println("Failed to retrieve the list of installed applications.");
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
+    public static void findExes(File directory, List<String> exePaths) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(".exe")) {
+                    exePaths.add(file.getAbsolutePath());
+                }
+            }
+        }
+    }
 
-    public static void main(String args[]){
-        ListApp.getInstance().list("ListApp.txt");
+    public static void writeFoldersAndExes(String outputPath, Map<String, List<String>> folderExeMap) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
+            for (Map.Entry<String, List<String>> entry : folderExeMap.entrySet()) {
+                writer.write("App Name: " + entry.getKey());
+                writer.newLine();
+                writer.write("Executable Paths:");
+                writer.newLine();
+                for (String exePath : entry.getValue()) {
+                    writer.write(exePath);
+                    writer.newLine();
+                }
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
+
+
+
+

